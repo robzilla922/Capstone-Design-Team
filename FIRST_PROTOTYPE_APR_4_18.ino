@@ -78,9 +78,9 @@ void loop() {
   Serial.print("G: "); Serial.print(g, DEC); Serial.print(" ");
   Serial.print("B: "); Serial.print(b, DEC); Serial.print(" \n");
 
-// Tell robot to move forward, if the color sensor reads the appropriate color (r, g, b) & the photoresistors
+// Tell robot to move forward if the color sensor reads the appropriate color (r, g, b) & the photoresistors
 // read approximately the same intensity.
-  if ( (left_level > (right_level - 10)) && (left_level < (right_level + 10)) && (r > 750)){
+    if ( (left_level > (right_level - 10)) && (left_level < (right_level + 10)) && (r > 1000)){
     analogWrite(3, 0);
     analogWrite(11, 0);
     delay(1000);
@@ -90,7 +90,8 @@ void loop() {
     analogWrite(11, 150);
   }
 
-  else if ( (left_level < (right_level - 10)) && (r >500) ){
+// Tell robot to turn right if right PR is 10 higher than left.
+  else if ( (left_level < (right_level - 10)) && (r > 750) ){
     analogWrite(3, 0);
     analogWrite(11, 0);
     delay(1000);
@@ -100,7 +101,8 @@ void loop() {
     analogWrite(11, 150);    
   }
 
-  else if ( (left_level > (right_level + 10)) && (r >500) ){
+// Tell robot to turn left if left PR is 10 higher than right.
+  else if ( (left_level > (right_level + 10)) && (r > 750) ){
     analogWrite(3, 0);
     analogWrite(11, 0);
     delay(1000);
@@ -109,7 +111,9 @@ void loop() {
     analogWrite(3, 150);
     analogWrite(11, 150);    
   }
-  
+
+/*
+// Rotate left to search for red light
   else if ( (r < 750)){
     analogWrite(3, 0);
     analogWrite(11, 0);
@@ -118,6 +122,18 @@ void loop() {
     digitalWrite(13, HIGH);
     analogWrite(3, 150);
     analogWrite(11, 150);
+  }
+*/
+
+// Don't move if red light is low.
+  else if (r<750){
+    analogWrite(3, 0);
+    analogWrite(11, 0);
+    delay(1000);
+    digitalWrite(12, 0);
+    digitalWrite(13, 0);
+    analogWrite(3, 0);
+    analogWrite(11, 0); 
   }
 
 }
